@@ -1,7 +1,7 @@
 import './Leaderboard.css';
 
 function getTopDorms() {
-    let dormsData = fetch("hjo")
+    let dormsData = fetch("/ranks");
     return dormsData;
 }
 
