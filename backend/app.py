@@ -6,9 +6,11 @@ from model import Challenge
 from data import DatabaseConnection
 from bson.son import SON
 from bson import json_util
+from flask_cors import CORS
 
 app = Flask(__name__)
 db = DatabaseConnection()
+CORS(app)
 
 
 @app.route("/ranks")
@@ -29,7 +31,7 @@ def get_dorm_data(name=None):
     Gets data for one dorm by its id.
 
     For example:\n
-    Slusher Tower: `slusher`, 
+    Slusher Tower: `slusher`,
     West Ambler Johnson: `west_aj`"""
 
     cur = db.get_dorms().find_one({"id": {"$eq": name}})
