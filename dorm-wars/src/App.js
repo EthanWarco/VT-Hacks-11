@@ -8,6 +8,7 @@ import AddChallenge from "./AddChallenge.js";
 import './App.css';
 
 function App() {
+<<<<<<< Updated upstream
   
     return (
         <>
@@ -28,6 +29,12 @@ function App() {
                   </Routes>
             </BrowserRouter>
         </>
+=======
+    return (
+        <div className="header">
+            <Leaderboard />
+        </div>
+>>>>>>> Stashed changes
     );
 }
 
