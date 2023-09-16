@@ -18,11 +18,13 @@ function Leaderboard() {
     const mostAmbulances = getMostAmbulances();
     const mostParties = getMostParties();
     return (
-        <div className="Leaderboard">
-            <Category title = "Fire Alarms Pulled" info = {mostFireAlarms} />
-            <Category title = "Parties Hosted" info = {mostParties} />
-            <Category title = "Ambulances Arrived" info = {mostAmbulances} />
-        </div>
+        <>
+            <div className="Leaderboard">
+                <Category title = "Fire Alarms Pulled" info = {mostFireAlarms} />
+                <Category title = "Parties Hosted" info = {mostParties} />
+                <Category title = "Ambulances Arrived" info = {mostAmbulances} />
+            </div>    
+        </>
     );
 }
 export default Leaderboard;

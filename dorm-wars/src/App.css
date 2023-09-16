@@ -1,14 +1,23 @@
-.App {
-  text-align: center;
+.topnav {
+  background-color: #630031;
+  overflow: hidden;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+.topnav .link {
+  background-color: #630031;
   color: white;
+  float: left;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+a {
+  color: white;
+  text-decoration: none;
+}
+
+.topnav .link a:hover {
+  color: #cf4420;
 }
