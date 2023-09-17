@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Challenge from "./Challenge";
+import './Challenge.css';
 
 export default function Challenges() {
     const [isLoading, setLoading] = useState(true);

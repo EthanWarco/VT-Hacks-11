@@ -7,6 +7,10 @@
     width: 20em;
 }
 
+p, h5, strong {
+    color: black;
+}
+
 .challenge-list {
     display: flex;
     flex-direction: column;
