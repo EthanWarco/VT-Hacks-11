@@ -20,7 +20,7 @@ def get_dorm_ranks():
     """
     Returns all dorms, sorted by fire alarm count in descending order."""
     dc = db.dorms()
-    cursor = dc.find({"alarm_count": {"$gte": 0}}).sort(
+    cursor = dc.find().sort(
         "alarm_count", pymongo.DESCENDING
     )
     found_elements = list(cursor)
