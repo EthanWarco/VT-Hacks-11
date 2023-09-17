@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './AddEvent.css';
-import {countMap} from './alias';
+import { countMap } from './alias';
 
-function addEvent(type, time, ampm) {
+function addEvent(type, time, dorm, ampm) {
     let date = new Date(Date.now());
     let [h, m] = time.split(":");
     if (ampm === "PM") {
@@ -13,16 +13,14 @@ function addEvent(type, time, ampm) {
     }
     date.setMinutes(m);
 
-    let metric = countMap.get(type);
-
-    console.log(metric + date.toTimeString());
+    console.log(type + date.toTimeString());
 
     fetch("http://localhost:5000/report", {
         method: "post",
         headers: { "Content-Type": "application/json", 'Accept': 'application/json', },
         body: JSON.stringify({
-            metric: metric,
-            dorm: "slusher", // FIXME: add picker for place or read from user cookie
+            metric: type,
+            dorm: dorm, 
             date: date.toISOString()
         })
     })
@@ -34,7 +32,7 @@ function addEvent(type, time, ampm) {
 class AddEvent extends React.Component {
     constructor() {
         super();
-        this.state = { event: 'Fire Alarm', time: '12:00', ampm: 'AM' }
+        this.state = { event: 'Fire Alarm', time: '12:00', ampm: 'AM', dorm: '' }
     }
     render() {
         return (
@@ -83,10 +81,15 @@ class AddEvent extends React.Component {
                         <option value="party_count">Party</option>
                     </select>
                 </div>
-                <div className="submit">
-                    <button className="button" onClick={() => addEvent(this.state.event, this.state.time, this.state.ampm)}>Submit</button>
+                <div>
+                    <label for="dorm">Dorm: </label>
+                    <input value={this.state.dorm} onChange={(e) => { this.setState({dorm: e.target.value}) }} type="text" name="text" size="10" maxlength="10000"
+                    className="messagetext"></input>
                 </div>
-            </div>
+                <div className="submit">
+                    <button className="button" onClick={() => addEvent(this.state.event, this.state.time, this.state.dorm, this.state.ampm)}>Submit</button>
+                </div>
+            </div >
         )
     }
 }

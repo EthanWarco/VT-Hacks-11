@@ -1,5 +1,10 @@
 import './Ratings.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
+
+function getReviews() {
+    return [["Ethan Warco", "Slusher Tower", "This dorm sucks!"], ["Lily Warco", "O'Shaughnessy", "I love this dorm!"]];
+}
 
 export default function Ratings() {
     const [formData, setFormData] = useState({
@@ -8,12 +13,35 @@ export default function Ratings() {
         body: '',
     });
 
+    const { isAuthenticated, user } = useAuth0();
+    const [reviews, setReviews] = useState([]);
+    const [isLoading, setLoading] = useState(true);
+
+    function refreshReviews() {
+        fetch("http://127.0.0.1:5000/reviews")
+            .then(response => response.json())
+            .catch(error => console.error(error))
+            .then(response => setReviews(response))
+            .finally(setLoading(false));
+    }
+
+    useEffect(() => {
+        refreshReviews();
+    }, []);
+
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
 
     const submitReview = (e) => {
+        if (!isAuthenticated) {
+            return <div>Sign in to leave a review!</div>;
+        }
         e.preventDefault();
         fetch("http://localhost:5000/review", {
             method: "post",
@@ -27,37 +55,6 @@ export default function Ratings() {
 
     return (
         <div>
-            <h1>Ratings</h1>
-            <ul>
-                <li>Ambler Johnston (East)                               </li>
-                <li>Ambler Johnston (West)                               </li>
-                <li>Campbell (Main)                                      </li>
-                <li>Campbell (East)                                      </li>
-                <li>Cochrane                                             </li>
-                <li>The Creativity and Innovation District Residence Hall</li>
-                <li>Eggleston (East)                                     </li>
-                <li>Eggleston (Main)                                     </li>
-                <li>Eggleston (West)                                     </li>
-                <li>Graduate Life Center at Donaldson Brown              </li>
-                <li>Harper                                               </li>
-                <li>Hillcrest                                            </li>
-                <li>Hoge Hall                                            </li>
-                <li>Johnson                                              </li>
-                <li>Miles                                                </li>
-                <li>New Hall West                                        </li>
-                <li>New Residence Hall East                              </li>
-                <li>Newman                                               </li>
-                <li>O'Shaughnessy Hall                                   </li>
-                <li>Payne                                                </li>
-                <li>Pearson Hall East                                    </li>
-                <li>Pearson Hall West                                    </li>
-                <li>Peddrew-Yates                                        </li>
-                <li>Pritchard                                            </li>
-                <li>Slusher Hall                                         </li>
-                <li>Upper Quad Hall North                                </li>
-                <li>Vawter                                               </li>
-                <li>Whitehurst Hall                                      </li>
-            </ul>
             <div class="area">
                 <h2>Submit Review</h2>
                 <form onSubmit={submitReview}>
@@ -66,7 +63,21 @@ export default function Ratings() {
                     <input name="body" onChange={handleInputChange} style={{ height: 200, width: 600 }} placeholder="Enter upto 500 words" />
                     <input type="submit"></input>
                 </form>
+                <div className = "review">{reviews.map(review => <Review key={review["_id"]} dorm = {review["dorm_name"]} name = {review["user_name"]} message = {review["body"]}/>)}</div>
             </div>
+        </div>
+    );
+}
+
+function Review(props) {
+    return (
+        <div className = "review">
+            <br/>
+            <div>
+                <strong>{props.dorm}</strong>
+                <span style = {{color:"gray"}}> - {props.name}</span>
+            </div>
+            <div className = "message">{props.message}</div>
         </div>
     );
 }

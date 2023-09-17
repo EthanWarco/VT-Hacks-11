@@ -8,7 +8,6 @@ import { dormMap } from './alias';
 //     return [["[Slusher] Ethan Warco", "Hello World!", "Sep 16 2023 4:43 PM"], ["[O'Shaughnessy] Lily Warco", "Hello World!", "Sep 16 2023 4:42 PM"]];
 // }
 
-
 function Messages() {
     const { isAuthenticated, user } = useAuth0();
     const [messages, setMessages] = useState([]);
@@ -33,8 +32,6 @@ function Messages() {
     if (isLoading) {
         return <div>Loading...</div>;
     }
-
-    console.log(user);
 
     let msg = messages.map(el => {
         let d = new Date(Date.parse(el["sent"]["$date"]));

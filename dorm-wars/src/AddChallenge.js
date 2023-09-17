@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './AddChallenge.css';
-import {countMap, dormMap} from "./alias";
+import { countMap, dormMap } from "./alias";
 
 function addChallenge(type, location, time, ampm) {
     let date = new Date(Date.now());
@@ -34,6 +34,14 @@ class AddChallenge extends React.Component {
             <div className="header">
                 <div>Start a Challenge</div>
                 <br />
+                <div>
+                    <label for="type">Challenge type: </label>
+                    <input value={this.state.type} onChange={(e) => { this.setState({ type: e.target.value }) }} type="text" name="type" size="20" maxlength="45" className="text"></input>
+                </div>
+                <div>
+                    <label for="location">Challenge location: </label>
+                    <input value={this.state.location} onChange={(e) => { this.setState({ location: e.target.value }) }} type="text" name="location" size="20" maxlength="45" className="text"></input>
+                </div>
 
                 <div>
                     <label for="time">Time: </label>
@@ -69,14 +77,6 @@ class AddChallenge extends React.Component {
                         <option value="PM">PM</option>
                     </select>
                 </div>
-                <div>
-                    <label for="type">Challenge type: </label>
-                    <input value={this.state.type} onChange={(e) => { this.setState({ type: e.target.value }) }} type="text" name="type" size="20" maxlength="45" className="text"></input>
-                </div>
-                <div>
-                    <label for="location">Challenge location: </label>
-                    <input value={this.state.location} onChange={(e) => { this.setState({ location: e.target.value }) }} type="text" name="location" size="20" maxlength="45" className="text"></input>
-                </div>
 
                 <div className="submit">
                     <button className="button" onClick={() => {
@@ -91,7 +91,8 @@ class AddChallenge extends React.Component {
                         }
                     }}>Submit</button>
                 </div>
-            </div>
+
+            </div >
         )
     }
 }

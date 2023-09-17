@@ -129,8 +129,15 @@ def create_report():
         # Add the report to total list of reports
         db.reports().insert_one(report.model_dump())
 
-        # Increment the counter for the thing
-        db.reports().update_one({{"id": dorm}, {"$inc": {metric: "1"}}})
+        # Specify the document you want to update (filter)
+        filter_criteria = {'id': str(dorm)}
+
+        # Update the field by incrementing it by 1
+        app.logger.info(f"metric: {metric}")
+        update_operation = {'$inc': {metric: 1}}
+
+        # Increment the counter for the thing   
+        db.dorms().update_one(filter=filter_criteria, update=update_operation)
 
         return jsonify({"result": f"Reported {dorm}, {metric}"}), 200
     except Exception as e:
@@ -168,6 +175,14 @@ def add_review():
         return jsonify(result), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+@app.route("/reviews")
+def get_reviews():
+    cursor = db.reviews().find().limit(10)
+    msgs = list(cursor)
+    app.logger.info(msgs)
+    return json.loads(json_util.dumps(msgs))
+
     
 
 @app.route("/message", methods=["POST"])
