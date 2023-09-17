@@ -4,7 +4,7 @@ from flask import logging
 
 import pymongo
 import json
-from model import Challenge, Review
+from model import Challenge, Review, Report
 from data import DatabaseConnection
 from bson.son import SON
 from bson import json_util
@@ -36,7 +36,7 @@ def get_dorm_data(name=None):
     Slusher Tower: `slusher`,
     West Ambler Johnson: `west_aj`"""
 
-    cur = db.get_dorms().find_one({"id": {"$eq": name}})
+    cur = db.dorms().find_one({"id": {"$eq": name}})
     return json.loads(json_util.dumps(cur))
 
 
@@ -45,7 +45,7 @@ def challenge_err():
     return "USAGE: /from_dorm/to_dorm/metric_dorm"
 
 
-@app.route("/challenge/<from_dorm>/<to_dorm>/<metric>")
+@app.route("/challenge/<to_dorm>/<metric>")
 def create_challenge(from_dorm=str, to_dorm=str, metric=str):
     """
     Creates a new challenge from a given dorm to another dorm tracking a specified metric.
@@ -58,8 +58,10 @@ def create_challenge(from_dorm=str, to_dorm=str, metric=str):
     end = start + timedelta(days=7)
 
     challenge = Challenge(
-        from_dorm=from_dorm,
+        from_dorm="VT",
+        from_members=100,
         to_dorm=to_dorm,
+        to_members=20,
         metric=metric,
         start_date=start,
         end_date=end,
@@ -83,6 +85,56 @@ def get_all_challenges():
     converted_json = json.loads(json_util.dumps(cursor_list))
 
     return converted_json
+
+
+@app.route("/report", methods=["POST"])
+def create_report():
+    """
+    Creates a report for the given metric.
+    First it checks if there is a report in the last 30 minutes.
+    If so, it is probably referring to the same event, so disregard. Otherwise add to the report collection.
+    """
+    try:
+        data = request.get_json()
+
+        if not data:
+            return jsonify({"error": "No JSON data provided"}), 400
+
+        dorm = data["dorm"]
+        metric = data["metric"]
+        date = data["date"]
+
+        app.logger.info(f"Attempting to report {metric} at {dorm} at time {date}")
+
+        provided_time = datetime.fromisoformat(date)
+        cutoff_time = provided_time - timedelta(minutes=30)
+
+        cursor = db.reports().find(
+            {
+                "metric": {"$eq": metric},
+                "date": {"$gte": cutoff_time},
+                "dorm": {"$eq": dorm},
+            }
+        )
+
+        results = list(cursor)
+        app.logger.info(results)
+
+        if len(results) > 0:
+            app.logger.error("Event has already been reported!")
+            return jsonify({"error": "The event has already been reported"}), 400
+
+        report = Report(dorm=dorm, date=provided_time, metric=metric)
+
+        # Add the report to total list of reports
+        db.reports().insert_one(report.model_dump())
+
+        # Increment the counter for the thing
+        db.reports().update_one({{"id": dorm}, {"$inc": {metric: "1"}}})
+
+        return jsonify({"result": f"Reported {dorm}, {metric}"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 @app.route("/review", methods=["POST"])

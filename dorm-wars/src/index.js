@@ -7,17 +7,17 @@ import { Auth0Provider } from '@auth0/auth0-react';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <React.StrictMode>
-        <Auth0Provider
-            domain="dev-b2wyb6y1wdtslxl0.us.auth0.com"
-            clientId="wAzz4x9AQRhljCeWCr66qLNX1PmDlbK1"
-            authorizationParams={{
-                redirect_uri: window.location.origin
-            }}
-        >
+    <Auth0Provider
+        domain="dev-b2wyb6y1wdtslxl0.us.auth0.com"
+        clientId="wAzz4x9AQRhljCeWCr66qLNX1PmDlbK1"
+        authorizationParams={{
+            redirect_uri: window.location.origin
+        }}
+    >
+        <React.StrictMode>
             <App />
-        </Auth0Provider>
-    </React.StrictMode>
+        </React.StrictMode>
+    </Auth0Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function

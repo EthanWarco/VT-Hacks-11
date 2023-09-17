@@ -22,3 +22,6 @@ class DatabaseConnection:
     
     def reviews(self):
         return self.db.get_collection("reviews")
+    
+    def reports(self):
+        return self.db.get_collection("reports")

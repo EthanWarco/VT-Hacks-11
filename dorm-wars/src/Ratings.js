@@ -1,21 +1,26 @@
 import './Ratings.css';
 import { useState } from 'react';
+import {useAuth0} from '@auth0/auth0-react';
 
 function getReviews() {
     return [["Ethan Warco", "Slusher Tower", "This dorm sucks!"], ["Lily Warco", "O'Shaughnessy", "I love this dorm!"]];
 }
 
+
+
 export default function Ratings() {
     const [formData, setFormData] = useState({
         userName: '',
         dormName: '',
-        body: 'I\'m a rapper',
+        body: '',
     });
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
+
+    const {user} = useAuth0();
 
     const submitReview = (e) => {
         e.preventDefault();
