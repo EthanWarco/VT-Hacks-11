@@ -9,11 +9,10 @@ h1 {
 }
 
 div.area {
-    position: absolute;
-    top: 100px;
-    right: 550px;
+    margin: auto 15px;
     width: 200px;
     height: 100px;
+    float: left;
 }
 
 input {
@@ -22,7 +21,6 @@ input {
     height: 40px;
 }
 
-h2 {
-    text-align: left;
-    vertical-align: top;
-}
+.review {
+    font-size: 20px;
+    width: 1000px;
