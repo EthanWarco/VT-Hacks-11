@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './AddEvent.css';
-import countMap from './alias';
+import {countMap} from './alias';
 
 function addEvent(type, time, ampm) {
     let date = new Date(Date.now());

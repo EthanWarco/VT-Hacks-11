@@ -45,7 +45,7 @@ def challenge_err():
     return "USAGE: /from_dorm/to_dorm/metric_dorm"
 
 
-@app.route("/challenge/<from_dorm>/<to_dorm>/<metric>")
+@app.route("/challenge/<to_dorm>/<metric>")
 def create_challenge(from_dorm=str, to_dorm=str, metric=str):
     """
     Creates a new challenge from a given dorm to another dorm tracking a specified metric.
@@ -58,8 +58,10 @@ def create_challenge(from_dorm=str, to_dorm=str, metric=str):
     end = start + timedelta(days=7)
 
     challenge = Challenge(
-        from_dorm=from_dorm,
+        from_dorm="VT",
+        from_members=100,
         to_dorm=to_dorm,
+        to_members=20,
         metric=metric,
         start_date=start,
         end_date=end,
