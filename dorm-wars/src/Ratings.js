@@ -1,18 +1,20 @@
 import './Ratings.css';
 import { useState } from 'react';
-
+import {useAuth0} from '@auth0/auth0-react';
 
 export default function Ratings() {
     const [formData, setFormData] = useState({
         userName: '',
         dormName: '',
-        body: 'I\'m a rapper',
+        body: '',
     });
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
+
+    const {user} = useAuth0();
 
     const submitReview = (e) => {
         e.preventDefault();
