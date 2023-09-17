@@ -53,7 +53,7 @@ export default function Ratings() {
                 <li><button class="">Pearson Hall East                                    </button></li>
                 <li><button class="">Pearson Hall West                                    </button></li>
                 <li><button class="">Peddrew-Yates                                        </button></li>
-                <li><button class="">Pritchard                                            </button></li>
+                <li><button class="">Pritchard Hall                                       </button></li>
                 <li><button class="">Slusher Hall                                         </button></li>
                 <li><button class="">Upper Quad Hall North                                </button></li>
                 <li><button class="">Vawter                                               </button></li>
