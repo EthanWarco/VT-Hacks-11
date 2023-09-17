@@ -5,11 +5,18 @@ import Challenges from "./Challenges";
 import Leaderboard from "./Leaderboard";
 import AddEvent from "./AddEvent.js";
 import AddChallenge from "./AddChallenge.js";
-import SignUp from "./SignUp.js"
 import Ratings from "./Ratings.js"
 import './App.css';
+import LoginButton from "./LoginButton";
+import LogoutButton from "./LogoutButton";
+import { useAuth0 } from "@auth0/auth0-react";
 
 function App() {
+    const { isAuthenticated, isLoading } = useAuth0();
+
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <>
@@ -21,13 +28,12 @@ function App() {
                     <div className='link'><NavLink to="/ratings">Ratings</NavLink></div>
                     <div className='link'><NavLink to="/add-event">Record an Event</NavLink></div>
                     <div className='link'><NavLink to="/add-challenge">Start a Challenge</NavLink></div>
-                    <div className='link'><NavLink to="/signup">SignUp</NavLink></div>
+                    <div className='link'>{isAuthenticated ? <LogoutButton /> : <LoginButton />}</div>
                 </div>
                 <Routes>
                     <Route exact path="/messages" element={<Messages />} />
                     <Route exact path="/challenges" element={<Challenges />} />
                     <Route exact path="/ratings" element={<Ratings />} />
-                    <Route exact path="/signup" element={<SignUp />} />
                     <Route exact path="/add-event" element={<AddEvent />} />
                     <Route exact path="/add-challenge" element={<AddChallenge />} />
                     <Route exact path="/" element={<Leaderboard />} />

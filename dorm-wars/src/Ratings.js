@@ -1,11 +1,36 @@
 import './Ratings.css';
+import { useState } from 'react';
 
-function Ratings() {
+
+export default function Ratings() {
+    const [formData, setFormData] = useState({
+        userName: '',
+        dormName: '',
+        body: 'I\'m a rapper',
+    });
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+    };
+
+    const submitReview = (e) => {
+        e.preventDefault();
+        fetch("http://localhost:5000/review", {
+            method: "post",
+            headers: { "Content-Type": "application/json", 'Accept': 'application/json', },
+            body: JSON.stringify(formData)
+        })
+            .then(response => response.json())
+            .then(response => console.log(response))
+            .catch(error => console.error(error));
+    };
+
     return (
         <div>
             <h1>Ratings</h1>
             <ul>
-                <li><button onclick="alert('Submitted.')" class="">Ambler Johnston (East) </button></li>
+                <li><button class="">Ambler Johnston (East) </button></li>
                 <li><button class="">Ambler Johnston (West)                               </button></li>
                 <li><button class="">Campbell (Main)                                      </button></li>
                 <li><button class="">Campbell (East)                                      </button></li>
@@ -36,13 +61,13 @@ function Ratings() {
             </ul>
             <div class="area">
                 <h2>Submit Review</h2>
-                <input placeholder="Name of the Dorm" />
-                <input placeholder="First and Last Name" />
-                <input style={{ height: 200 }} placeholder="Enter upto 500 words" />
-                <button type="submit">Submit</button>
+                <form onSubmit={submitReview}>
+                    <input name="dormName" onChange={handleInputChange} placeholder="Name of the Dorm" />
+                    <input name="userName" onChange={handleInputChange} placeholder="First and Last Name" />
+                    <input name="body" onChange={handleInputChange} style={{ height: 200 }} placeholder="Enter upto 500 words" />
+                    <input type="submit"></input>
+                </form>
             </div>
         </div>
     );
 }
-
-export default Ratings;

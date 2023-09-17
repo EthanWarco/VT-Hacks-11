@@ -1,8 +1,10 @@
 from datetime import datetime, timedelta
-from flask import Flask
+from flask import Flask, jsonify, request
+from flask import logging
+
 import pymongo
 import json
-from model import Challenge
+from model import Challenge, Review
 from data import DatabaseConnection
 from bson.son import SON
 from bson import json_util
@@ -81,6 +83,39 @@ def get_all_challenges():
     converted_json = json.loads(json_util.dumps(cursor_list))
 
     return converted_json
+
+
+@app.route("/review", methods=["POST"])
+def add_review():
+    try:
+        # Get the JSON data from the request
+        data = request.get_json()
+
+        # Check if the request contains JSON data
+        if not data:
+            return jsonify({"error": "No JSON data provided"}), 400
+
+        # Access JSON parameters
+        user_name = data["userName"]
+        dorm_name = data["dormName"]
+        body = data["body"]
+        app.logger.info(f"userName: {user_name} dormName: {dorm_name}")
+        app.logger.info(data)
+
+        review = Review(
+            dorm_name=dorm_name, user_name=user_name, date=datetime.now(), body=body
+        )
+
+        res = db.reviews().insert_one(review.model_dump())
+
+        app.logger.info(res)
+
+        # Do something with the parameters (e.g., perform some processing)
+        result = {"result": f"Processed parameters: {user_name}, {dorm_name}"}
+
+        return jsonify(result), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 @app.route("/")

@@ -19,3 +19,6 @@ class DatabaseConnection:
 
     def challenges(self):
         return self.db.get_collection("challenges")
+    
+    def reviews(self):
+        return self.db.get_collection("reviews")
