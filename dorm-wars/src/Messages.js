@@ -14,12 +14,16 @@ function Messages() {
     const [messages, setMessages] = useState([]);
     const [isLoading, setLoading] = useState(true);
 
-    useEffect(() => {
+    function refreshMessages() {
         fetch("http://127.0.0.1:5000/messages")
             .then(response => response.json())
             .catch(error => console.error(error))
             .then(response => setMessages(response))
             .finally(setLoading(false));
+    }
+
+    useEffect(() => {
+        refreshMessages();
     }, []);
 
     if (!isAuthenticated) {
@@ -37,10 +41,13 @@ function Messages() {
         return ["[" + (dormMap.get(el["sender_dorm"]) ? dormMap.get(el["sender_dorm"]) : el["sender_dorm"]) + "] " + el["sender_name"], el["body"], d.toLocaleString()]
     }
     );
+
+    setInterval(() => { console.log("Refreshing messages..."); refreshMessages(); }, 5000);
+
     return (
         <div>
             <ChatTextbox />
-            <div>{msg.map(message => <Message name={message[0]} message={message[1]} time={message[2]} />)}</div>
+            <div>{msg.map(message => <Message name={message[0]} message={message[1]} time={message[2]} />).reverse()}</div>
         </div>
     );
 }
