@@ -1,24 +1,49 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './AddEvent.css';
+import {countMap} from './alias';
 
-function addEvent(type, time) {
-    console.log(type + ", " + time);
+function addEvent(type, time, ampm) {
+    let date = new Date(Date.now());
+    let [h, m] = time.split(":");
+    if (ampm === "PM") {
+        date.setHours(h);
+    } else {
+        date.setHours(24 - h);
+    }
+    date.setMinutes(m);
+
+    let metric = countMap.get(type);
+
+    console.log(metric + date.toTimeString());
+
+    fetch("http://localhost:5000/report", {
+        method: "post",
+        headers: { "Content-Type": "application/json", 'Accept': 'application/json', },
+        body: JSON.stringify({
+            metric: metric,
+            dorm: "slusher", // FIXME: add picker for place or read from user cookie
+            date: date.toISOString()
+        })
+    })
+        .then(response => response.json())
+        .then(response => console.log(response))
+        .catch(error => console.error(error));
 }
 
 class AddEvent extends React.Component {
-    constructor(){
-      super();
-      this.state={event: 'Fire Alarm', time: '12:00', ampm: 'AM'}
+    constructor() {
+        super();
+        this.state = { event: 'Fire Alarm', time: '12:00', ampm: 'AM' }
     }
     render() {
         return (
-            <div className = "header">
+            <div className="header">
                 <div>Record an Event</div>
-                <br/>
+                <br />
                 <div>
                     <label for="time">Time: </label>
-                    <select value={this.state.time} onChange={(e)=>{this.setState({time: e.target.value})}} id="time" className="text">
+                    <select value={this.state.time} onChange={(e) => { this.setState({ time: e.target.value }) }} id="time" className="text">
                         <option value="12:00" >12:00</option>
                         <option value="12:30">12:30</option>
                         <option value="1:00">1:00</option>
@@ -45,21 +70,21 @@ class AddEvent extends React.Component {
                         <option value="11:30">11:30</option>
                     </select>
                     <label for="ampm"> </label>
-                    <select value={this.state.ampm} onChange={(e)=>{this.setState({ampm: e.target.value})}} id="ampm" className="text">
+                    <select value={this.state.ampm} onChange={(e) => { this.setState({ ampm: e.target.value }) }} id="ampm" className="text">
                         <option value="AM">AM</option>
                         <option value="PM">PM</option>
                     </select>
                 </div>
                 <div>
                     <label for="event">Event: </label>
-                    <select value={this.state.event} onChange={(e)=>{this.setState({event: e.target.value})}} id="event" className="text">
-                        <option value="fire-alarm">Fire Alarm</option>
-                        <option value="ambulance">Ambulance</option>
-                        <option value="party">Party</option>
+                    <select value={this.state.event} onChange={(e) => { this.setState({ event: e.target.value }) }} id="event" className="text">
+                        <option value="alarm_count">Fire Alarm</option>
+                        <option value="ambulance_count">Ambulance</option>
+                        <option value="party_count">Party</option>
                     </select>
                 </div>
-                <div className = "submit">
-                    <button className = "button" onClick={() => addEvent(this.state.event, this.state.time + " " + this.state.ampm)}>Submit</button>
+                <div className="submit">
+                    <button className="button" onClick={() => addEvent(this.state.event, this.state.time, this.state.ampm)}>Submit</button>
                 </div>
             </div>
         )

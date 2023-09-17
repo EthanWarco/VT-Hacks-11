@@ -25,6 +25,11 @@ class Challenge(BaseModel):
             }
         }
 
+class Report(BaseModel):
+    dorm: str = Field(...)
+    date: datetime = Field(...)
+    metric: str = Field(...)
+
 class Review(BaseModel):
     dorm_name: str = Field(...)
     user_name: str = Field(...)

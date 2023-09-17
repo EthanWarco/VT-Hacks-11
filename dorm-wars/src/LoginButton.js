@@ -1,10 +1,14 @@
-import React from "react";
+import { React,useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const LoginButton = () => {
-    const { loginWithRedirect } = useAuth0();
+    const { loginWithPopup } = useAuth0();
   
-    return <button onClick={() => loginWithRedirect()}>Log In</button>;
+    return <button onClick={async () => {
+      console.log("login pressed"); 
+      let a = await loginWithPopup();
+      console.log(a);
+    }}>Log In</button>;
   };
   
   export default LoginButton;
