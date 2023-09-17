@@ -1,6 +1,5 @@
 import './Ratings.css';
 import { useState } from 'react';
-import {useAuth0} from '@auth0/auth0-react';
 
 export default function Ratings() {
     const [formData, setFormData] = useState({
@@ -13,8 +12,6 @@ export default function Ratings() {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
-
-    const {user} = useAuth0();
 
     const submitReview = (e) => {
         e.preventDefault();

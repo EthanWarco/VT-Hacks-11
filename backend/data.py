@@ -25,3 +25,9 @@ class DatabaseConnection:
     
     def reports(self):
         return self.db.get_collection("reports")
+    
+    def messages(self):
+        return self.db.get_collection("messages")
+    
+    def users(self):
+        return self.db.get_collection("users")

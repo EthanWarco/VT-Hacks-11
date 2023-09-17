@@ -4,7 +4,7 @@ from flask import logging
 
 import pymongo
 import json
-from model import Challenge, Review, Report
+from model import Challenge, Review, Report, Message, User
 from data import DatabaseConnection
 from bson.son import SON
 from bson import json_util
@@ -168,6 +168,44 @@ def add_review():
         return jsonify(result), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+
+@app.route("/message", methods=["POST"])
+def add_message():
+    try:
+        # Get the JSON data from the request
+        data = request.get_json()
+
+        # Check if the request contains JSON data
+        if not data:
+            return jsonify({"error": "No JSON data provided"}), 400
+
+        # Access JSON parameters
+        sender_name = data["senderName"]
+        sender_dorm = data["senderDorm"]
+        sent = datetime.now()
+        body = data["body"]
+        app.logger.info(f"Message recv -> userName: {sender_name} dormName: {sender_dorm}")
+        app.logger.info(data)
+
+        message = Message(sender_name=sender_name, sender_dorm=sender_dorm, sent=sent, body=body)
+
+        res = db.messages().insert_one(message.model_dump())
+
+        app.logger.info(res)
+
+        result = {"result": f"Message added for {sender_name}"}
+
+        return jsonify(result), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+@app.route("/messages")
+def get_messages():
+    cursor = db.messages().find().limit(100)
+    msgs = list(cursor)
+    app.logger.info(msgs)
+    return json.loads(json_util.dumps(msgs))
 
 
 @app.route("/")
