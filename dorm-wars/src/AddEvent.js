@@ -1,11 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './AddEvent.css';
-<<<<<<< HEAD
 import { countMap } from './alias';
-=======
-import {countMap} from './alias';
->>>>>>> 9b035c65d758a623279e3343704acd408802b41b
 
 function addEvent(type, time, ampm) {
     let date = new Date(Date.now());
@@ -43,11 +39,7 @@ class AddEvent extends React.Component {
     render() {
         return (
             <div className="header">
-<<<<<<< HEAD
-                <h1>Record an Event</h1>
-=======
                 <div>Record an Event</div>
->>>>>>> 9b035c65d758a623279e3343704acd408802b41b
                 <br />
                 <div>
                     <label for="time">Time: </label>
@@ -94,7 +86,7 @@ class AddEvent extends React.Component {
                 <div className="submit">
                     <button className="button" onClick={() => addEvent(this.state.event, this.state.time, this.state.ampm)}>Submit</button>
                 </div>
-            </div>
+            </div >
         )
     }
 }

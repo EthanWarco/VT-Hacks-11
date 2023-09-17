@@ -1,11 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './AddChallenge.css';
-<<<<<<< HEAD
 import { countMap, dormMap } from "./alias";
-=======
-import {countMap, dormMap} from "./alias";
->>>>>>> 9b035c65d758a623279e3343704acd408802b41b
 
 function addChallenge(type, location, time, ampm) {
     let date = new Date(Date.now());
@@ -36,8 +32,7 @@ class AddChallenge extends React.Component {
     render() {
         return (
             <div className="header">
-<<<<<<< HEAD
-                <h1>Start a Challenge</h1>
+                <div>Start a Challenge</div>
                 <br />
                 <div>
                     <label for="type">Challenge type: </label>
@@ -47,10 +42,6 @@ class AddChallenge extends React.Component {
                     <label for="location">Challenge location: </label>
                     <input value={this.state.location} onChange={(e) => { this.setState({ location: e.target.value }) }} type="text" name="location" size="20" maxlength="45" className="text"></input>
                 </div>
-=======
-                <div>Start a Challenge</div>
-                <br />
->>>>>>> 9b035c65d758a623279e3343704acd408802b41b
 
                 <div>
                     <label for="time">Time: </label>
@@ -86,7 +77,6 @@ class AddChallenge extends React.Component {
                         <option value="PM">PM</option>
                     </select>
                 </div>
-<<<<<<< HEAD
 
                 <div className="submit">
                     <button className="button" onClick={() => {
@@ -102,30 +92,6 @@ class AddChallenge extends React.Component {
                     }}>Submit</button>
                 </div>
 
-=======
-                <div>
-                    <label for="type">Challenge type: </label>
-                    <input value={this.state.type} onChange={(e) => { this.setState({ type: e.target.value }) }} type="text" name="type" size="20" maxlength="45" className="text"></input>
-                </div>
-                <div>
-                    <label for="location">Challenge location: </label>
-                    <input value={this.state.location} onChange={(e) => { this.setState({ location: e.target.value }) }} type="text" name="location" size="20" maxlength="45" className="text"></input>
-                </div>
-
-                <div className="submit">
-                    <button className="button" onClick={() => {
-                        if (this.state.type == '' && this.state.location == '') {
-                            //Set both red
-                        } else if (this.state.type == '') {
-                            //Set one red
-                        } else if (this.state.location == '') {
-                            //Set one red
-                        } else {
-                            addChallenge(this.state.type, this.state.location, this.state.time, this.state.ampm);
-                        }
-                    }}>Submit</button>
-                </div>
->>>>>>> 9b035c65d758a623279e3343704acd408802b41b
             </div >
         )
     }
