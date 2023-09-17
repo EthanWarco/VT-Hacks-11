@@ -24,3 +24,9 @@ class Challenge(BaseModel):
                 "end_date": "2023-09-23T10:52:46.084862",
             }
         }
+
+class Review(BaseModel):
+    dorm_name: str = Field(...)
+    user_name: str = Field(...)
+    body: str = Field(...)
+    date: datetime = Field(...)
