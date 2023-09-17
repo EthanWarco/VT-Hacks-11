@@ -33,7 +33,7 @@ export default function Challenges() {
                             metric={challenge["metric"]}
                             endDate={challenge["end_date"]["$date"]}
                             fromCount={0}
-                            toCount={0} />)}
+                            toCount={0} />).reverse()}
                 </ul>
             </div>
         </div>

@@ -19,9 +19,9 @@ export default function Leaderboard() {
     if(isLoading) {
         return <div>Loading...</div>;
     }
-
+    
     function getMetric(metricName) {
-        return board.map((el) => [el["name"], el[metricName] ? el[metricName] : 0]).sort((el) => el[1]);
+        return board.map((el) => [el["name"], el[metricName] ? el[metricName] : 0]).sort((a, b) => a[metricName] - b[metricName]);
     }
 
     const alarms = getMetric("alarm_count");

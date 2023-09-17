@@ -4,7 +4,7 @@ from flask import logging
 
 import pymongo
 import json
-from model import Challenge, Review, Report
+from model import Challenge, Review, Report, Message, User
 from data import DatabaseConnection
 from bson.son import SON
 from bson import json_util
@@ -20,7 +20,7 @@ def get_dorm_ranks():
     """
     Returns all dorms, sorted by fire alarm count in descending order."""
     dc = db.dorms()
-    cursor = dc.find({"alarm_count": {"$gte": 0}}).sort(
+    cursor = dc.find().sort(
         "alarm_count", pymongo.DESCENDING
     )
     found_elements = list(cursor)
@@ -129,8 +129,15 @@ def create_report():
         # Add the report to total list of reports
         db.reports().insert_one(report.model_dump())
 
-        # Increment the counter for the thing
-        db.reports().update_one({{"id": dorm}, {"$inc": {metric: "1"}}})
+        # Specify the document you want to update (filter)
+        filter_criteria = {'id': str(dorm)}
+
+        # Update the field by incrementing it by 1
+        app.logger.info(f"metric: {metric}")
+        update_operation = {'$inc': {metric: 1}}
+
+        # Increment the counter for the thing   
+        db.dorms().update_one(filter=filter_criteria, update=update_operation)
 
         return jsonify({"result": f"Reported {dorm}, {metric}"}), 200
     except Exception as e:
@@ -168,6 +175,52 @@ def add_review():
         return jsonify(result), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+@app.route("/reviews")
+def get_reviews():
+    cursor = db.reviews().find().limit(10)
+    msgs = list(cursor)
+    app.logger.info(msgs)
+    return json.loads(json_util.dumps(msgs))
+
+    
+
+@app.route("/message", methods=["POST"])
+def add_message():
+    try:
+        # Get the JSON data from the request
+        data = request.get_json()
+
+        # Check if the request contains JSON data
+        if not data:
+            return jsonify({"error": "No JSON data provided"}), 400
+
+        # Access JSON parameters
+        sender_name = data["senderName"]
+        sender_dorm = data["senderDorm"]
+        sent = datetime.now()
+        body = data["body"]
+        app.logger.info(f"Message recv -> userName: {sender_name} dormName: {sender_dorm}")
+        app.logger.info(data)
+
+        message = Message(sender_name=sender_name, sender_dorm=sender_dorm, sent=sent, body=body)
+
+        res = db.messages().insert_one(message.model_dump())
+
+        app.logger.info(res)
+
+        result = {"result": f"Message added for {sender_name}"}
+
+        return jsonify(result), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+@app.route("/messages")
+def get_messages():
+    cursor = db.messages().find().limit(100)
+    msgs = list(cursor)
+    app.logger.info(msgs)
+    return json.loads(json_util.dumps(msgs))
 
 
 @app.route("/")

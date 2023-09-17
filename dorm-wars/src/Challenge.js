@@ -7,8 +7,8 @@ export default function Challenge({fromDorm, fromCount, toDorm, toCount, endDate
          <div class="challenge">
             <p><strong>{fromDorm}</strong> challenged <strong>{toDorm}</strong></p>
             <p>
-                tracking {metric}
-                <strong>{fromCount}</strong> - <strong>{toCount}</strong>
+                tracking {metric}     
+                <strong>   {fromCount}</strong> - <strong>{toCount}</strong>
             </p>
             <p>until <strong>{dateText.toLocaleString()}</strong></p>
          </div>

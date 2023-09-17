@@ -35,3 +35,13 @@ class Review(BaseModel):
     user_name: str = Field(...)
     body: str = Field(...)
     date: datetime = Field(...)
+
+class Message(BaseModel):
+    sent: datetime = Field(...)
+    body: str = Field(...)
+    sender_name: str = Field(...)
+    sender_dorm: str = Field(...)
+
+class User(BaseModel):
+    name: str = Field(...)
+    dorm: str = Field(...)
