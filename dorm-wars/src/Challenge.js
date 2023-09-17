@@ -10,7 +10,7 @@ export default function Challenge({fromDorm, fromCount, toDorm, toCount, endDate
                 tracking {metric}
                 <strong>{fromCount}</strong> - <strong>{toCount}</strong>
             </p>
-            <p>until <strong>{dateText.toDateString()}</strong></p>
+            <p>until <strong>{dateText.toLocaleString()}</strong></p>
          </div>
         </>
     )
