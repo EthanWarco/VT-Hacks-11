@@ -2,7 +2,7 @@ import './Messages.css';
 import Textbox from './Textbox.js';
 
 function getMessages() {
-    return [["[Slusher] Ethan Warco", "Hello World!", "Sep 16 2023 4:43 PM"], ["[O'Shaughnessy] Lily Warco", "Hello World!", "Sep 16 2023 4:42 PM"]];
+    return [["Ethan Warco", "Hello World!", "Sep 16 2023 4:43 PM"], ["Lily Warco", "Hello World!", "Sep 16 2023 4:42 PM"]];
 }
 
 function Messages() {
