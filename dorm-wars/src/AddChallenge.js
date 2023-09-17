@@ -1,12 +1,26 @@
-import './AddChallenge'
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './AddChallenge.css';
 
-function AddChallenge() {
-    return (
+function addChallenge(type, location, time) {
+    console.log(type + ", " + location + ", " + time);
+}
+
+class AddChallenge extends React.Component {
+    constructor(){
+      super();
+      this.state={type: '', location: '', time: '12:00', ampm: 'AM'}
+    }
+
+    render() {
+      return (
         <div className = "header">
-            <h1>Start a Challenge</h1>
+            <div>Start a Challenge</div>
+            <br/>
+            
             <div>
-                <label for="hour">Hour: </label>
-                <select id="hour" className="text">
+                <label for="time">Time: </label>
+                <select value={this.state.time} onChange={(e)=>{this.setState({time: e.target.value})}} id="time" className="text">
                     <option value="12:00" >12:00</option>
                     <option value="12:30">12:30</option>
                     <option value="1:00">1:00</option>
@@ -33,24 +47,38 @@ function AddChallenge() {
                     <option value="11:30">11:30</option>
                 </select>
                 <label for="ampm"> </label>
-                <select id="ampm" className="text">
-                    <option value="AM">AM</option>
-                    <option value="PM">PM</option>
-                </select>
+                    <select value={this.state.ampm} onChange={(e)=>{this.setState({ampm: e.target.value})}} id="ampm" className="text">
+                        <option value="AM">AM</option>
+                        <option value="PM">PM</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="type">Challenge type: </label>
+                    <input value={this.state.type} onChange={(e)=>{this.setState({type: e.target.value})}} type="text" name="type" size="20" maxlength="45" className="text"></input>
+                </div>
+                <div>
+                    <label for="location">Challenge location: </label>
+                    <input value={this.state.location} onChange={(e)=>{this.setState({location: e.target.value})}} type="text" name="location" size="20" maxlength="45" className="text"></input>
             </div>
-            <div>
-                <label for="type">Challenge type: </label>
-                <input type="text" name="type" size="20" maxlength="45" className="text"></input>
-            </div>
-            <div>
-                <label for="location">Challenge location: </label>
-                <input type="text" name="location" size="20" maxlength="45" className="text"></input>
-            </div>
+            
             <div className = "submit">
-                <button className = "button">Submit</button>
+                <button className = "button" onClick={() => {
+                    if(this.state.type == '' && this.state.location == '') {
+                        //Set both red
+                    } else if(this.state.type == '') {
+                        //Set one red
+                    } else if(this.state.location == '') {
+                        //Set one red
+                    } else {
+                        addChallenge(this.state.type, this.state.location, this.state.time + " " + this.state.ampm);
+                    }
+                }}>Submit</button>
             </div>
         </div>
-    );
+      )
+    }
 }
 
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<AddChallenge />);
 export default AddChallenge;
